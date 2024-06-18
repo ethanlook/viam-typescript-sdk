@@ -2,6 +2,13 @@ import type { MimeType } from '../../main';
 import type { Resource, StructType } from '../../types';
 import type { Classification, Detection, PointCloudObject } from './types';
 
+export interface Properties {
+  /** TODO: comments for these */
+  detectionsSupported: boolean;
+  classificationsSupported: boolean;
+  objectPointCloudsSupported: boolean;
+}
+
 /** A service that enables various computer vision algorithms */
 export interface Vision extends Resource {
   /**

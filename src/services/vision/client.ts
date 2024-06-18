@@ -142,6 +142,25 @@ export class VisionClient implements Vision {
     return response.getObjectsList().map((x) => x.toObject());
   }
 
+  async getProperties(extra = {}) {
+    const { service } = this;
+    const request = new pb.GetPropertiesRequest();
+    request.setName(this.name);
+    request.setExtra(Struct.fromJavaScript(extra));
+
+    this.options.requestLogger?.(request);
+
+    const response = await promisify<
+      pb.GetPropertiesRequest,
+      pb.GetPropertiesResponse
+    >(service.getProperties.bind(service), request);
+    return {
+      detectionsSupported: response.getDetectionsSupported(),
+      classificationsSupported: response.getClassificationsSupported(),
+      objectPointCloudsSupported: response.getObjectPointCloudsSupported(),
+    };
+  }
+
   async doCommand(command: StructType): Promise<StructType> {
     const { service } = this;
     return doCommandFromClient(service, this.name, command, this.options);
